@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  username     String        @unique @db.VarChar(255)
+  password     String        @db.VarChar(255)
+  email        String        @unique @db.VarChar()
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  wallets      Wallet[]
+  categories   Category[]
+  transactions Transaction[]
+
+  @@index([id, username, email])
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String
+  expiresAt DateTime
+}
+
+model Wallet {
+  id           String        @id @default(cuid())
+  name         String        @db.VarChar(100)
+  balance      Float         @default(0)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  color        String?       @db.VarChar(7)
+  transactions Transaction[]
+
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  @@index([id])
+}
+
+model Transaction {
+  id          String          @id @default(cuid())
+  name        String          @db.VarChar(100)
+  type        TransactionType
+  amount      Float
+  description String?         @db.Text
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  Wallet      Wallet          @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  walletId    String
+  category    Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  categoryId  String
+  User        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+
+  @@index([id])
+}
+
+model Category {
+  id          String        @id @default(cuid())
+  name        String        @db.VarChar(100)
+  icon        String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  User        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String
+  Transaction Transaction[]
+}
+
+enum TransactionType {
+  EXPENSE
+  INCOME
+  TRANSFER
+}
