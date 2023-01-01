@@ -31,6 +31,10 @@ const AuthProvider = ({ children }: Props) => {
       setUser(user);
       navigate("/");
     } catch (error) {
+      if (error instanceof Error) {
+        const err = JSON.parse(error.message);
+        throw err.message;
+      }
       throw new Error("Something went wrong", { cause: error });
     }
   };
@@ -41,6 +45,10 @@ const AuthProvider = ({ children }: Props) => {
       setUser(user);
       navigate("/");
     } catch (error) {
+      if (error instanceof Error) {
+        const err = JSON.parse(error.message);
+        throw err.message;
+      }
       throw new Error("Something went wrong", { cause: error });
     }
   };

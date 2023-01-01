@@ -4,8 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginInputs, LoginSchema } from "@/features/auth/auth.schema";
 import useAuth from "@/hooks/useAuth";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Login = () => {
+  const [formError, setFormError] = useState("");
+
   const {
     register,
     handleSubmit,
@@ -20,7 +23,10 @@ const Login = () => {
     try {
       await handleLogin(values);
     } catch (error) {
-      console.error(error);
+      if (typeof error === "string") {
+        return setFormError(error);
+      }
+      throw new Error("Something went wrong", { cause: error });
     }
   };
 
@@ -45,13 +51,22 @@ const Login = () => {
             {...register("password", { required: true })}
           />
         </div>
+
+        {formError && <p className="font-sm my-4 text-center text-red-500">{formError}</p>}
+
         <div className="flex items-center justify-between">
           <button
             type="submit"
             disabled={isSubmitting}
-            className="focus:shadow-outline rounded bg-primary-main py-2 px-4 font-bold text-white transition-all hover:bg-primary-dark focus:outline-none"
+            className={`focus:shadow-outline min-w-[100px] rounded py-2 px-4 font-bold text-white transition-all focus:outline-none
+               ${
+                 isSubmitting
+                   ? "bg-gray-400 text-white"
+                   : "bg-primary-main text-white hover:bg-primary-dark"
+               }
+            `}
           >
-            Sign In
+            {isSubmitting ? "Loading" : "Login In"}
           </button>
         </div>
 
