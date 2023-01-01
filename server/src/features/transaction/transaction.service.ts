@@ -15,11 +15,7 @@ export const createTransaction = async (userId: string, payload: TransactionInpu
       },
     });
 
-    if (payload.type === "INCOME") {
-      await updateBalance(payload.walletId, wallet.balance + payload.amount);
-    } else if (payload.type === "EXPENSE") {
-      await updateBalance(payload.walletId, wallet.balance - payload.amount);
-    }
+    await updateBalance(payload.walletId, wallet.balance + payload.amount);
 
     return transaction;
   } catch (error) {
@@ -85,11 +81,7 @@ export const updateTransaction = async (
 
     const wallet = await getOneWallet(userId, payload.walletId);
 
-    if (payload.type === "INCOME") {
-      await updateBalance(wallet.id, wallet.balance - transaction.amount + payload.amount);
-    } else if (payload.type === "EXPENSE") {
-      await updateBalance(wallet.id, wallet.balance + transaction.amount - payload.amount);
-    }
+    await updateBalance(wallet.id, wallet.balance - transaction.amount + payload.amount);
 
     return updatedTransaction;
   } catch (error) {
