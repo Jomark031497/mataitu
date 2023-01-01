@@ -20,13 +20,26 @@ export const createWallet = async (userId: string, payload: WalletInputs["body"]
 
 export const getWallets = async (userId: string) => {
   try {
-    const wallets = await prisma.wallet.findMany({
-      where: {
-        userId,
-      },
-    });
+    const [wallets, balance] = await prisma.$transaction([
+      prisma.wallet.findMany({
+        where: {
+          userId,
+        },
+      }),
+      prisma.wallet.aggregate({
+        _sum: {
+          balance: true,
+        },
+        where: {
+          userId,
+        },
+      }),
+    ]);
 
-    return wallets;
+    return {
+      balance: balance._sum.balance,
+      wallets,
+    };
   } catch (error) {
     if (error instanceof AppError) throw error;
     throw new Error("Something went wrong", { cause: error });

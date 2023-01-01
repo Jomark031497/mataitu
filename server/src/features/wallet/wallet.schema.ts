@@ -6,7 +6,7 @@ export const WalletSchema = z.object({
     balance: z
       .number({ invalid_type_error: "Invalid type. Balance should be a number" })
       .default(0),
-    color: z.string().max(7, "Color only accepts Hex code (#XXXXXX)").optional(),
+    color: z.string().max(30).optional(),
   }),
 });
 

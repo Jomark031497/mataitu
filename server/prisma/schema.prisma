@@ -37,7 +37,7 @@ model Wallet {
   balance      Float         @default(0)
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
-  color        String?       @db.VarChar(7)
+  color        String?       @db.VarChar(30)
   transactions Transaction[]
 
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
