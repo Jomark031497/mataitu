@@ -34,6 +34,10 @@ export const getAllTransactions = async (userId: string) => {
       where: {
         userId,
       },
+      include: {
+        category: true,
+        wallet: true,
+      },
     });
 
     return transactions;

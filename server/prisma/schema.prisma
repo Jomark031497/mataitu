@@ -40,7 +40,7 @@ model Wallet {
   color        String?       @db.VarChar(30)
   transactions Transaction[]
 
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   @@index([id])
@@ -54,11 +54,11 @@ model Transaction {
   description String?         @db.Text
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
-  Wallet      Wallet          @relation(fields: [walletId], references: [id], onDelete: Cascade)
+  wallet      Wallet          @relation(fields: [walletId], references: [id], onDelete: Cascade)
   walletId    String
   category    Category        @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId  String
-  User        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
 
   @@index([id])
@@ -70,7 +70,7 @@ model Category {
   icon        String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  User        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   Transaction Transaction[]
 }
