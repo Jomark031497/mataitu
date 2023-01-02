@@ -17,7 +17,7 @@ const Navbar = () => {
         mataitu
       </Link>
 
-      <Menu as="div" className="relative">
+      <Menu as="div" className="relative z-10">
         {({ open }) => (
           <>
             <Menu.Button className="flex items-center">

@@ -66,7 +66,7 @@ const Login = () => {
                }
             `}
           >
-            {isSubmitting ? "Loading" : "Login In"}
+            {isSubmitting ? "Loading" : "Login"}
           </button>
         </div>
 

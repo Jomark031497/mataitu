@@ -19,7 +19,8 @@
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     "no-unused-expressions": "warn",
-    "no-unused-labels": "warn"
+    "no-unused-labels": "warn",
+    "no-console": "warn"
   },
   "settings": {
     "react": {
