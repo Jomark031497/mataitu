@@ -60,6 +60,8 @@ const CreateWalletModal = ({ isOpen, toggleIsOpen }: Props) => {
                 {...register("name", { required: true })}
                 formError={errors.name}
               />
+
+              <Input label="Color" {...register("color")} formError={errors.color} />
             </div>
 
             <div className="flex gap-1">

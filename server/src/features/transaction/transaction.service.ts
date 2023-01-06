@@ -34,6 +34,9 @@ export const getAllTransactions = async (userId: string) => {
         category: true,
         wallet: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     return transactions;

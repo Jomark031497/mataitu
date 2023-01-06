@@ -1,39 +1,37 @@
 import { Container } from "@/components/ui";
-import { CreateWalletModal } from "@/features/wallet/components";
 import useTransactions from "@/hooks/useTransactions";
 import useWallets from "@/hooks/useWallets";
 import toCurrency from "@/utils/toCurrency";
 import toFormattedDate from "@/utils/toFormattedDate";
-import { useState } from "react";
 import { RiAddCircleLine } from "react-icons/ri";
+import { BsArrowRightShort } from "react-icons/bs";
+import { Link } from "react-router-dom";
+import getColor from "@/utils/colorMap";
 
 const Home = () => {
-  const [openCreateWalletModal, setOpenCreateWalletModal] = useState(false);
-
   const { data: walletsRes } = useWallets();
   const { data: transactions } = useTransactions();
-
-  const toggleCreateWalletModal = () => setOpenCreateWalletModal((prev) => !prev);
 
   return (
     <>
       <Container as="section" className="relative mb-6 rounded-xl bg-white shadow">
         <div className="mb-4 flex items-center justify-between">
-          <p className="text-xl font-extrabold text-primary-main">Your Wallets</p>
-          <button
-            onClick={() => toggleCreateWalletModal()}
-            className="flex items-center gap-1 rounded-xl bg-primary-main py-2 px-2 text-sm font-semibold text-white transition-all hover:bg-primary-dark"
+          <p className="text-xl font-extrabold text-primary-main">Wallets</p>
+          <Link
+            to="/wallets"
+            className="flex items-center gap-1 text-primary-main hover:text-primary-dark"
           >
-            <RiAddCircleLine className="self-center text-xl" />
-            Add Wallet
-          </button>
+            View Wallets <BsArrowRightShort className="text-2xl" />
+          </Link>
         </div>
 
         {walletsRes && (
           <div className="flex flex-col gap-2 px-2">
             {walletsRes.wallets.map((item) => (
               <div key={item.id} className="flex items-center justify-between">
-                <p className={`text-md`}>{item.name}</p>
+                <p className={`${item.color ? getColor(item.color)?.value : "text-"}`}>
+                  {item.name}
+                </p>
                 <p className="text-md font-bold">{toCurrency(item.balance)}</p>
               </div>
             ))}
@@ -44,8 +42,6 @@ const Home = () => {
             </div>
           </div>
         )}
-
-        <CreateWalletModal isOpen={openCreateWalletModal} toggleIsOpen={toggleCreateWalletModal} />
       </Container>
       {/* 
       <Container as="section" className="mb-6 rounded-xl bg-white shadow">
